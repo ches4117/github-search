@@ -1,4 +1,3 @@
-import './index.less'
 
 function RepoList() {
   return (
