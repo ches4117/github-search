@@ -1,6 +1,6 @@
-import Search from "./Search";
-import RepoList from './RepoList'
-import { ProviderContext } from '../context/provider'
+import Search from './Search';
+import RepoList from './RepoList';
+import { ProviderContext } from '../context/provider';
 
 export default function App() {
   return (
@@ -10,5 +10,5 @@ export default function App() {
         <RepoList />
       </ProviderContext>
     </div>
-  )
+  );
 }
