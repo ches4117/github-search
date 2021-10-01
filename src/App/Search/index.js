@@ -5,15 +5,19 @@ import { GithubContext } from '../../context';
 function Search() {
   const [state, dispatch] = useContext(GithubContext);
   const octokit = new Octokit({
-    auth: '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',
+    auth: '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',
   });
+
   const fetchRepo = async (keyWord) => {
     const result = await octokit.request('GET /search/repositories', {
       q: keyWord,
     });
     if (result) {
-      const repositories = result.data.items;
-      console.log(repositories);
+      const repos = result.data.items;
+      dispatch({
+        type: 'setRepos',
+        payload: { repos },
+      });
     }
   };
 

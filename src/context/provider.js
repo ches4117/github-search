@@ -4,14 +4,23 @@ import { GithubContext } from './';
 
 const initialState = {
   search: '',
+  repos: [],
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'setSearch':
       return {
+        ...state,
         search: action.payload.search,
       };
+
+    case 'setRepos':
+      return {
+        ...state,
+        repos: action.payload.repos,
+      };
+
     default:
       throw new Error();
   }
