@@ -5,7 +5,7 @@ import { GithubContext } from '../../context';
 function Search() {
   const [state, dispatch] = useContext(GithubContext);
   const octokit = new Octokit({
-    auth: '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',
+    auth: process.env.REACT_APP_AUTH,
   });
 
   const fetchRepo = async (keyWord) => {
