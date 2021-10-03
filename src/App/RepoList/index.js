@@ -85,7 +85,7 @@ function RepoList() {
     return () => {
       observerRef.current.disconnect();
     };
-  });
+  }, [repos]);
 
   useEffect(() => {
     if (search) {
@@ -107,7 +107,7 @@ function RepoList() {
       {repos.map((repo, index) => {
         if (index === repos.length - 1) {
           return (
-            <div key={`${index}-${repo.full_name}`} ref={lastItemRef}>
+            <div key={repo.full_name} ref={lastItemRef}>
               <RepoCard
                 title={repo.full_name}
                 description={repo.description}
@@ -119,7 +119,7 @@ function RepoList() {
         }
         return (
           <RepoCard
-            key={`${index}-${repo.full_name}`}
+            key={repo.full_name}
             title={repo.full_name}
             description={repo.description}
             htmlUrl={repo.html_url}
