@@ -13,7 +13,7 @@ function RepoList() {
   const [isLoading, setIsLoading] = useState(false);
   const lastItemRef = useRef();
   const observerRef = useRef();
-  const { search, repos, page, pageEnd, error } = state;
+  const { search, repos, perPage, page, pageEnd, error } = state;
 
   const fetchInitRepo = async ({ nowSearch, nowPage }) => {
     try {
@@ -22,6 +22,7 @@ function RepoList() {
         const result = await octokit.request('GET /search/repositories', {
           q: nowSearch,
           page: nowPage,
+          per_page: perPage,
         });
 
         dispatch({
@@ -47,11 +48,12 @@ function RepoList() {
         const result = await octokit.request('GET /search/repositories', {
           q: nowSearch,
           page: nowPage,
+          per_page: perPage,
         });
 
         dispatch({
           type: 'setMoreRepos',
-          payload: { repos: result.data.items },
+          payload: { repos: result.data.items, page: nowPage },
         });
         setIsLoading(false);
       }
@@ -66,7 +68,7 @@ function RepoList() {
 
   useEffect(() => {
     const options = {
-      rootMargin: '0px 0px 10px 0px',
+      rootMargin: '0px 0px 20px 0px',
       threshold: 0,
     };
 
@@ -105,20 +107,19 @@ function RepoList() {
       {repos.map((repo, index) => {
         if (index === repos.length - 1) {
           return (
-            <div key={`${repo.id}-${repo.name}`}>
+            <div key={`${index}-${repo.full_name}`} ref={lastItemRef}>
               <RepoCard
                 title={repo.full_name}
                 description={repo.description}
                 htmlUrl={repo.html_url}
                 search={search}
               />
-              <div ref={lastItemRef} />
             </div>
           );
         }
         return (
           <RepoCard
-            key={`${repo.id}-${repo.name}`}
+            key={`${index}-${repo.full_name}`}
             title={repo.full_name}
             description={repo.description}
             htmlUrl={repo.html_url}

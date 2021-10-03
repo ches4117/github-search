@@ -7,7 +7,7 @@ const initialState = {
   repos: [],
   page: 1,
   pageEnd: false,
-  per_page: 10,
+  perPage: 10,
   error: undefined,
 };
 
@@ -33,7 +33,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         repos: [...state.repos, ...action.payload?.repos],
-        page: state.page + (action.payload?.repos?.length !== 0),
+        page: action.payload?.page || 1,
         pageEnd: action.payload?.repos?.length === 0,
       };
 

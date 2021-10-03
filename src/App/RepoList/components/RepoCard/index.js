@@ -7,12 +7,14 @@ RepoCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   htmlUrl: PropTypes.string,
+  search: PropTypes.string,
 };
 
 RepoCard.defaultProps = {
   title: '',
   description: '',
   htmlUrl: '',
+  search: '',
 };
 
 export default function RepoCard({ title, description, htmlUrl, search }) {
@@ -30,10 +32,10 @@ export default function RepoCard({ title, description, htmlUrl, search }) {
       return newString;
     }
   };
-  useState(() => {
+  useEffect(() => {
     const titleSearchIndex = title.indexOf(search);
     if (titleSearchIndex >= 0) setTitleHasKeyWord(true);
-  });
+  }, [title, search]);
 
   return (
     <Card className={styles.card}>
