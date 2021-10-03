@@ -5,6 +5,7 @@ import { GithubContext } from './';
 const initialState = {
   search: '',
   repos: [],
+  page: 1,
 };
 
 const reducer = (state, action) => {
@@ -12,13 +13,21 @@ const reducer = (state, action) => {
     case 'setSearch':
       return {
         ...state,
-        search: action.payload.search,
+        search: action.payload?.search,
       };
 
     case 'setRepos':
       return {
         ...state,
-        repos: action.payload.repos,
+        repos: action.payload?.repos,
+        page: state.page + 1,
+      };
+
+    case 'setMoreRepos':
+      return {
+        ...state,
+        repos: [...state.repos, ...action.payload?.repos],
+        page: state.page + 1,
       };
 
     default:

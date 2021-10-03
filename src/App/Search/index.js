@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
-import { Octokit } from '@octokit/core';
 import { GithubContext } from '../../context';
+import { octokit } from '../../utils';
 
 function Search() {
   const [state, dispatch] = useContext(GithubContext);
-  const octokit = new Octokit({
-    auth: process.env.REACT_APP_AUTH,
-  });
 
   const fetchRepo = async (keyWord) => {
     const result = await octokit.request('GET /search/repositories', {
       q: keyWord,
+      per_page: 10,
+      page: 1,
     });
+
     if (result) {
       const repos = result.data.items;
       dispatch({
