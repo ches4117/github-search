@@ -7,6 +7,7 @@ const initialState = {
   repos: [],
   page: 1,
   pageEnd: false,
+  error: undefined,
 };
 
 const reducer = (state, action) => {
@@ -31,6 +32,12 @@ const reducer = (state, action) => {
         repos: [...state.repos, ...action.payload?.repos],
         page: state.page + (action.payload?.repos?.length !== 0),
         pageEnd: action.payload?.repos?.length === 0,
+      };
+
+    case 'setError':
+      return {
+        ...state,
+        error: action.payload?.error,
       };
 
     default:
