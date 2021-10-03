@@ -6,7 +6,7 @@ import { octokit } from '../../utils';
 function RepoList() {
   const [state, dispatch] = useContext(GithubContext);
   const loader = useRef(null);
-  const { search, repos, page } = state;
+  const { search, repos, page, pageEnd } = state;
   const options = {
     rootMargin: '0px 0px 10px 0px',
     threshold: 0,
@@ -26,7 +26,7 @@ function RepoList() {
   };
 
   useEffect(() => {
-    if (loader.current && search) {
+    if (loader.current && search && !pageEnd) {
       const observer = new IntersectionObserver((entries, observer) => {
         if (entries[0].isIntersecting) {
           fetchRepo();

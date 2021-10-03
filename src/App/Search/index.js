@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
+import { debounce } from 'lodash';
 import { GithubContext } from '../../context';
 import { octokit } from '../../utils';
 
 function Search() {
-  const [state, dispatch] = useContext(GithubContext);
+  const [, dispatch] = useContext(GithubContext);
 
-  const fetchRepo = async (keyWord) => {
+  const fetchRepo = async (search) => {
     const result = await octokit.request('GET /search/repositories', {
-      q: keyWord,
+      q: search,
       per_page: 10,
       page: 1,
     });
@@ -15,23 +16,18 @@ function Search() {
     if (result) {
       const repos = result.data.items;
       dispatch({
+        type: 'setSearch',
+        payload: { search },
+      });
+
+      dispatch({
         type: 'setRepos',
         payload: { repos },
       });
     }
   };
 
-  const handleSearchChange = (search) => {
-    dispatch({
-      type: 'setSearch',
-      payload: { search },
-    });
-  };
-
-  const handleSearchClick = (e) => {
-    e.preventDefault();
-    fetchRepo(state.search);
-  };
+  const handleSearchChange = debounce((e) => fetchRepo(e.target.value), 500);
 
   return (
     <div className="col-24">
@@ -45,17 +41,8 @@ function Search() {
               className="form-control form-control-lg form-control-borderless"
               type="search"
               placeholder="Please input to search GitHub repo"
-              onChange={(e) => handleSearchChange(e.target.value)}
+              onChange={handleSearchChange}
             />
-          </div>
-          <div className="col-auto">
-            <button
-              className="btn btn-lg btn-success"
-              type="submit"
-              onClick={handleSearchClick}
-            >
-              Search
-            </button>
           </div>
         </div>
       </form>

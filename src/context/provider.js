@@ -6,6 +6,7 @@ const initialState = {
   search: '',
   repos: [],
   page: 1,
+  pageEnd: false,
 };
 
 const reducer = (state, action) => {
@@ -21,13 +22,15 @@ const reducer = (state, action) => {
         ...state,
         repos: action.payload?.repos,
         page: state.page + 1,
+        pageEnd: false,
       };
 
     case 'setMoreRepos':
       return {
         ...state,
         repos: [...state.repos, ...action.payload?.repos],
-        page: state.page + 1,
+        page: state.page + (action.payload?.repos?.length !== 0),
+        pageEnd: action.payload?.repos?.length === 0,
       };
 
     default:
