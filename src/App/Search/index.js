@@ -1,40 +1,17 @@
 import React, { useContext } from 'react';
 import { debounce } from 'lodash';
 import { GithubContext } from '../../context';
-import { octokit, errorStatusText } from '../../utils';
 
 function Search() {
   const [, dispatch] = useContext(GithubContext);
 
-  const fetchRepo = async (search) => {
-    try {
-      const result = await octokit.request('GET /search/repositories', {
-        q: search,
-        per_page: 10,
-        page: 1,
-      });
-
-      if (result) {
-        const repos = result.data.items;
-        dispatch({
-          type: 'setSearch',
-          payload: { search },
-        });
-
-        dispatch({
-          type: 'setRepos',
-          payload: { repos },
-        });
-      }
-    } catch (e) {
-      dispatch({
-        type: 'setError',
-        payload: { error: errorStatusText[e.status] },
-      });
-    }
-  };
-
-  const handleSearchChange = debounce((e) => fetchRepo(e.target.value), 500);
+  const handleSearchChange = debounce((e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'setSearch',
+      payload: { search: e.target.value },
+    });
+  }, 500);
 
   return (
     <div className="col-24">

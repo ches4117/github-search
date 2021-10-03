@@ -7,6 +7,7 @@ const initialState = {
   repos: [],
   page: 1,
   pageEnd: false,
+  per_page: 10,
   error: undefined,
 };
 
@@ -22,7 +23,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         repos: action.payload?.repos,
-        page: state.page + 1,
+        page: 1,
         pageEnd: false,
       };
 
@@ -39,6 +40,9 @@ const reducer = (state, action) => {
         ...state,
         error: action.payload?.error,
       };
+
+    case 'reset':
+      return initialState;
 
     default:
       throw new Error();
