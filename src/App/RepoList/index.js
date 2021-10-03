@@ -110,6 +110,7 @@ function RepoList() {
                 title={repo.full_name}
                 description={repo.description}
                 htmlUrl={repo.html_url}
+                search={search}
               />
               <div ref={lastItemRef} />
             </div>
@@ -121,6 +122,7 @@ function RepoList() {
             title={repo.full_name}
             description={repo.description}
             htmlUrl={repo.html_url}
+            search={search}
           />
         );
       })}
