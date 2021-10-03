@@ -62,5 +62,5 @@ export const ProviderContext = (props) => {
 };
 
 ProviderContext.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.object,
 };
