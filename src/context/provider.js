@@ -16,7 +16,9 @@ const reducer = (state, action) => {
     case 'setSearch':
       return {
         ...state,
+        repos: [],
         search: action.payload?.search,
+        pageEnd: false,
       };
 
     case 'setRepos':
@@ -24,7 +26,7 @@ const reducer = (state, action) => {
         ...state,
         repos: action.payload?.repos,
         page: 1,
-        pageEnd: false,
+        pageEnd: action.payload?.repos?.length === 0,
       };
 
     case 'setMoreRepos':

@@ -3,12 +3,14 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { GithubContext } from '../../context';
-import styles from './index.css';
+import RepoCard from './components/RepoCard';
+import NoRepoCard from './components/NoRepoCard';
 import { octokit, errorStatusText } from '../../utils';
 
 function RepoList() {
-  const [isLoading, setIsLoading] = useState(false);
   const [state, dispatch] = useContext(GithubContext);
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const lastItemRef = useRef();
   const observerRef = useRef();
   const { search, repos, page, pageEnd, error } = state;
@@ -25,20 +27,22 @@ function RepoList() {
         dispatch({
           type: 'setRepos',
           payload: { repos: result.data.items },
-        }).then(() => {
-          setIsLoading(false);
         });
+        setIsLoading(false);
       }
     } catch (e) {
       dispatch({
         type: 'setError',
         payload: { error: errorStatusText[e.status] },
       });
+      setShowModal(true);
+      observerRef.current.disconnect();
     }
   };
 
   const fetchMoreRepo = async ({ nowSearch, nowPage }) => {
     try {
+      setIsLoading(true);
       if (nowSearch) {
         const result = await octokit.request('GET /search/repositories', {
           q: nowSearch,
@@ -49,20 +53,15 @@ function RepoList() {
           type: 'setMoreRepos',
           payload: { repos: result.data.items },
         });
+        setIsLoading(false);
       }
     } catch (e) {
       dispatch({
         type: 'setError',
         payload: { error: errorStatusText[e.status] },
       });
+      setShowModal(true);
     }
-  };
-
-  const clearError = () => {
-    dispatch({
-      type: 'setError',
-      payload: { error: undefined },
-    });
   };
 
   useEffect(() => {
@@ -77,7 +76,7 @@ function RepoList() {
       }
     }, options);
 
-    if (lastItemRef.current && !pageEnd) {
+    if (lastItemRef.current && !pageEnd && !error) {
       observerRef.current.observe(lastItemRef.current);
     }
 
@@ -96,40 +95,46 @@ function RepoList() {
     }
   }, [search]);
 
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
+      {repos.length === 0 && !isLoading && <NoRepoCard />}
       {repos.map((repo, index) => {
         if (index === repos.length - 1) {
           return (
-            <div
-              className={`card ${styles.card}`}
-              key={`${repo.id}-${repo.name}`}
-              ref={lastItemRef}
-            >
-              <div className="card-body">{repo.description} </div>
+            <div key={`${repo.id}-${repo.name}`}>
+              <RepoCard
+                title={repo.full_name}
+                description={repo.description}
+                htmlUrl={repo.html_url}
+              />
+              <div ref={lastItemRef} />
             </div>
           );
         }
         return (
-          <div
-            className={`card ${styles.card}`}
+          <RepoCard
             key={`${repo.id}-${repo.name}`}
-          >
-            <div className="card-body">{repo.description} </div>
-          </div>
+            title={repo.full_name}
+            description={repo.description}
+            htmlUrl={repo.html_url}
+          />
         );
       })}
       {error && (
-        <Modal show onHide={clearError}>
+        <Modal show={showModal} onHide={handleModalClose}>
           <Modal.Body>{error}</Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={clearError}>
+            <Button variant="primary" onClick={handleModalClose}>
               close
             </Button>
           </Modal.Footer>
         </Modal>
       )}
-      {isLoading && search && (
+      {search && !pageEnd && !error && (
         <ClipLoader
           css={{
             display: 'block',
