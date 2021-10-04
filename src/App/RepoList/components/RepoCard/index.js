@@ -21,11 +21,13 @@ export default function RepoCard({ title, description, htmlUrl, search }) {
   const [titleHasKeyWord, setTitleHasKeyWord] = useState(false);
   const addEm = (text) => {
     if (text) {
-      const keyWordIndex = text.indexOf(search);
+      const keyWordIndex = text.toUpperCase().indexOf(search.toUpperCase());
       const newString = (
         <span>
           {text.substring(0, keyWordIndex)}
-          <em className={styles.emText}>{search}</em>
+          <em className={styles.emText}>
+            {text.substring(keyWordIndex, keyWordIndex + search.length)}
+          </em>
           {text.substring(keyWordIndex + search.length, text.length)}
         </span>
       );
@@ -33,7 +35,7 @@ export default function RepoCard({ title, description, htmlUrl, search }) {
     }
   };
   useEffect(() => {
-    const titleSearchIndex = title.indexOf(search);
+    const titleSearchIndex = title.toUpperCase().indexOf(search.toUpperCase());
     if (titleSearchIndex >= 0) setTitleHasKeyWord(true);
   }, [title, search]);
 
