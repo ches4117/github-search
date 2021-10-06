@@ -12,6 +12,7 @@
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
