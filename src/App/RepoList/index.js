@@ -107,7 +107,7 @@ function RepoList() {
       {repos.map((repo, index) => {
         if (index === repos.length - 1) {
           return (
-            <div key={repo.full_name} ref={lastItemRef}>
+            <div key={`${repo.full_name}${index}`} ref={lastItemRef}>
               <RepoCard
                 title={repo.full_name}
                 stargazersCount={repo.stargazers_count}
@@ -121,7 +121,7 @@ function RepoList() {
         }
         return (
           <RepoCard
-            key={repo.full_name}
+            key={`${repo.full_name}${index}`}
             title={repo.full_name}
             stargazersCount={repo.stargazers_count}
             updatedAt={repo.updated_at}
