@@ -18,6 +18,7 @@ REAT_APP_AUTH=YOUR_TOKEN
 - react-bootstrap
 - react-router-dom
 - react-spinners
+- useContext + useReducer
 - ...
 
 ## Feature
