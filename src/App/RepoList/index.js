@@ -110,6 +110,8 @@ function RepoList() {
             <div key={repo.full_name} ref={lastItemRef}>
               <RepoCard
                 title={repo.full_name}
+                stargazersCount={repo.stargazers_count}
+                updatedAt={repo.updated_at}
                 description={repo.description}
                 htmlUrl={repo.html_url}
                 search={search}
@@ -121,6 +123,8 @@ function RepoList() {
           <RepoCard
             key={repo.full_name}
             title={repo.full_name}
+            stargazersCount={repo.stargazers_count}
+            updatedAt={repo.updated_at}
             description={repo.description}
             htmlUrl={repo.html_url}
             search={search}
