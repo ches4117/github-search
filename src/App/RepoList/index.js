@@ -22,7 +22,7 @@ function RepoList() {
       payload: { error: errorStatusText[error.status] },
     });
     setShowModal(true);
-    observerRef.current.disconnect();
+    window.scrollTo(0, window.scrollY - 200);
   };
 
   const fetchInitRepo = async ({ nowSearch, nowPage }) => {

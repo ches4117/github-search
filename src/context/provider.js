@@ -27,6 +27,7 @@ const reducer = (state, action) => {
         repos: action.payload?.repos,
         page: 1,
         pageEnd: action.payload?.repos?.length === 0,
+        error: undefined,
       };
 
     case 'setMoreRepos':
@@ -35,6 +36,7 @@ const reducer = (state, action) => {
         repos: [...state.repos, ...action.payload?.repos],
         page: action.payload?.page || 1,
         pageEnd: action.payload?.repos?.length === 0,
+        error: undefined,
       };
 
     case 'setError':
