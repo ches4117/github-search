@@ -9,8 +9,8 @@ Node v12 or higher
 Add [personal-access-token](https://github.com/settings/tokens/) to .env 
 ```REAT_APP_AUTH=YOUR_TOKEN```
 ### Start project
-1. `yarn install`
-2. `yarn start`
+1. `npm install`
+2. `npm start`
 <br><br><br>
 
 ##  Architecture 
