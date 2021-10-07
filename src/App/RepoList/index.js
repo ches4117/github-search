@@ -15,6 +15,16 @@ function RepoList() {
   const observerRef = useRef();
   const { search, repos, perPage, page, pageEnd, error } = state;
 
+  // If api error, show the error moal and disconnect observerRef
+  const handleErrorFetch = (error) => {
+    dispatch({
+      type: 'setError',
+      payload: { error: errorStatusText[error.status] },
+    });
+    setShowModal(true);
+    observerRef.current.disconnect();
+  };
+
   const fetchInitRepo = async ({ nowSearch, nowPage }) => {
     try {
       if (nowSearch) {
@@ -32,12 +42,7 @@ function RepoList() {
         setIsLoading(false);
       }
     } catch (e) {
-      dispatch({
-        type: 'setError',
-        payload: { error: errorStatusText[e.status] },
-      });
-      setShowModal(true);
-      observerRef.current.disconnect();
+      handleErrorFetch(e);
     }
   };
 
@@ -58,11 +63,7 @@ function RepoList() {
         setIsLoading(false);
       }
     } catch (e) {
-      dispatch({
-        type: 'setError',
-        payload: { error: errorStatusText[e.status] },
-      });
-      setShowModal(true);
+      handleErrorFetch(e);
     }
   };
 
@@ -78,6 +79,7 @@ function RepoList() {
       }
     }, options);
 
+    // If api can get more pages, continue observe lastItem
     if (lastItemRef.current && !pageEnd && !error) {
       observerRef.current.observe(lastItemRef.current);
     }
@@ -91,6 +93,7 @@ function RepoList() {
     if (search) {
       fetchInitRepo({ nowSearch: search, nowPage: 1 });
     } else {
+      // If search clear, then reset all state
       dispatch({
         type: 'reset',
       });

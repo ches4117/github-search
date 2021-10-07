@@ -21,6 +21,7 @@ function Search() {
     history.replace(`?word=${e.target.value}`);
   }, 500);
 
+  // use setTimeout to wait history change
   useEffect(() => {
     setTimeout(() => {
       dispatch({
