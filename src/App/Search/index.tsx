@@ -8,7 +8,7 @@ import { GithubContext } from '../../context';
 function Search() {
   const [, dispatch] = useContext(GithubContext);
   const history = useHistory();
-  const { search } = useLocation();
+  const { search } = useLocation(); 
   const query = new URLSearchParams(search);
   const locationWord = query.get('word');
 
@@ -34,7 +34,7 @@ function Search() {
   return (
     <Navbar style={{ backgroundColor: '#fff', position: 'sticky' }} fixed="top">
       <input
-        defaultValue={locationWord}
+        defaultValue={locationWord || undefined}
         className="form-control form-control-lg form-control-borderless"
         type="search"
         placeholder="Please input to search GitHub repo"

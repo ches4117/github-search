@@ -1,38 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './index.module.css';
 
-RepoCard.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  htmlUrl: PropTypes.string,
-  search: PropTypes.string,
-  stargazersCount: PropTypes.number,
-  updatedAt: PropTypes.string,
-};
+interface RepoCardProps {
+  title: string,
+  description: string,
+  htmlUrl: string
+  search:string
+  stargazersCount: number,
+  updatedAt: string
+}
 
-RepoCard.defaultProps = {
-  title: '',
-  description: '',
-  htmlUrl: '',
-  search: '',
-  stargazersCount: 0,
-  updatedAt: Date(),
-};
-
-export default function RepoCard({
+const RepoCard: FC<RepoCardProps> =({
   title,
   description,
   htmlUrl,
   search,
   stargazersCount,
   updatedAt,
-}) {
+}) => {
   const [titleHasKeyWord, setTitleHasKeyWord] = useState(false);
   const nowYear = moment().format('YYYY');
-  const addEm = (text) => {
+  const addEm = (text: string) => {
     if (text) {
       const keyWordIndex = text.toUpperCase().indexOf(search.toUpperCase());
       const newString = (
@@ -48,7 +38,7 @@ export default function RepoCard({
     }
   };
 
-  const dateTrans = (updatedTime) => {
+  const dateTrans = (updatedTime: string) => {
     if (updatedTime) {
       const momentTransList = moment(updatedAt)
         .format('DD MMM YYYY')
@@ -92,3 +82,5 @@ export default function RepoCard({
     </Card>
   );
 }
+
+export default RepoCard

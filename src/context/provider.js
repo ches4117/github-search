@@ -55,7 +55,7 @@ const reducer = (state, action) => {
 
 export const ProviderContext = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  console.log(process.env.REACT_APP_AUTH);
   return (
     <GithubContext.Provider value={[state, dispatch]}>
       {props.children}
