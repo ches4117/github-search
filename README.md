@@ -7,7 +7,7 @@ github-search is a project to search Github repositories
 Node v12 or higher
 ### Create personal access token
 Add [personal-access-token](https://github.com/settings/tokens/) to .env 
-```REAT_APP_AUTH=YOUR_TOKEN```
+```REACT_APP_AUTH=YOUR_TOKEN```
 ### Start project
 1. `npm install`
 2. `npm start`
