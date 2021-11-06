@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import moment from 'moment';
+import { addEm, dateTrans } from './utils'
 import styles from './index.module.css';
 
 interface RepoCardProps {
@@ -22,36 +23,9 @@ const RepoCard: FC<RepoCardProps> =({
 }) => {
   const [titleHasKeyWord, setTitleHasKeyWord] = useState(false);
   const nowYear = moment().format('YYYY');
-  const addEm = (text: string) => {
-    if (text) {
-      const keyWordIndex = text.toUpperCase().indexOf(search.toUpperCase());
-      const newString = (
-        <span>
-          {text.substring(0, keyWordIndex)}
-          <em className={styles.emText}>
-            {text.substring(keyWordIndex, keyWordIndex + search.length)}
-          </em>
-          {text.substring(keyWordIndex + search.length, text.length)}
-        </span>
-      );
-      return newString;
-    }
-  };
 
-  const dateTrans = (updatedTime: string) => {
-    if (updatedTime) {
-      const momentTransList = moment(updatedAt)
-        .format('DD MMM YYYY')
-        .split(' ');
-      const newTrans = `${parseInt(momentTransList[0])} ${momentTransList[1]} ${
-        momentTransList[2] === nowYear ? '' : momentTransList[2]
-      }`;
-      return newTrans;
-    }
-    return;
-  };
   useEffect(() => {
-    const titleSearchIndex = title.toUpperCase().indexOf(search.toUpperCase());
+    const titleSearchIndex = title?.toUpperCase().indexOf(search.toUpperCase());
     if (titleSearchIndex >= 0) setTitleHasKeyWord(true);
   }, [title, search]);
 
@@ -60,10 +34,10 @@ const RepoCard: FC<RepoCardProps> =({
       <Card.Body>
         <Card.Title>
           <Card.Link target="_blank" href={htmlUrl}>
-            {titleHasKeyWord ? addEm(title) : title}
+            {titleHasKeyWord ? addEm(title, search) : title}
           </Card.Link>
         </Card.Title>
-        {titleHasKeyWord ? description : addEm(description)}
+        {titleHasKeyWord ? description : addEm(description, search)}
         <div className={styles.starWrapper}>
           <span>
             <a target="_blank" rel="noreferrer" href={`${htmlUrl}/stargazers`}>
@@ -76,7 +50,7 @@ const RepoCard: FC<RepoCardProps> =({
               <span>{stargazersCount}</span>
             </a>
           </span>
-          <span>Updated on {dateTrans(updatedAt)}</span>
+          <span>Updated on {dateTrans(updatedAt, updatedAt, nowYear)}</span>
         </div>
       </Card.Body>
     </Card>
