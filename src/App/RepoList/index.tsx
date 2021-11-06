@@ -21,8 +21,8 @@ function RepoList() {
   const [state, dispatch] = useContext(GithubContext);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const lastItemRef = useRef();
-  const observerRef = useRef();
+  const lastItemRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver>();
   const { search, repos, perPage, page, pageEnd, error } = state;
   // If api error, show the error moal and disconnect observerRef
   const handleErrorFetch = (error: errorObject) => {
@@ -84,20 +84,20 @@ function RepoList() {
       threshold: 0,
     };
 
-    // observerRef.current = new IntersectionObserver(([entry]) => {
-    //   if (entry.isIntersecting) {
-    //     fetchMoreRepo({ nowSearch: search, nowPage: page + 1 });
-    //   }
-    // }, options);
+    observerRef.current = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        fetchMoreRepo({ nowSearch: search, nowPage: page + 1 });
+      }
+    }, options);
 
-    // // If api can get more pages, continue observe lastItem
-    // if (lastItemRef.current && !pageEnd && !error) {
-    //   observerRef.current.observe(lastItemRef.current);
-    // }
+    // If api can get more pages, continue observe lastItem
+    if (lastItemRef.current && !pageEnd && !error) {
+      observerRef.current.observe(lastItemRef.current);
+    }
 
-    // return () => {
-    //   observerRef.current.disconnect();
-    // };
+    return () => {
+      observerRef.current?.disconnect();
+    };
   }, [repos]);
 
   useEffect(() => {
@@ -126,8 +126,7 @@ function RepoList() {
       {repos.map((repo: any, index: number) => {
         if (index === repos.length - 1) {
           return (
-            // <div key={`${repo.full_name}${index}`} ref={lastItemRef}>
-            <div key={`${repo.full_name}${index}`}>
+            <div key={`${repo.full_name}${index}`} ref={lastItemRef}>
               <RepoCard
                 title={repo.full_name}
                 stargazersCount={repo.stargazers_count}
