@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { css } from "@emotion/react";
 import { GithubContext } from '../../context';
 import RepoCard from './components/RepoCard/index';
 import NoRepoCard from './components/NoRepoCard/index';
+import ErrorModal from './components/ErrorModal/index';
 import { octokit, errorStatusText } from '../../utils';
 
 interface errorObject {
@@ -152,14 +152,7 @@ function RepoList() {
         );
       })}
       {error && (
-        <Modal show={showModal} onHide={handleModalClose}>
-          <Modal.Body>{error}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleModalClose}>
-              close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <ErrorModal error={error} showModal={showModal} handleModalClose={handleModalClose}/>
       )}
       {search && !pageEnd && !error && (
         <ClipLoader

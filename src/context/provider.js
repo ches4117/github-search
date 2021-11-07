@@ -11,7 +11,7 @@ const initialState = {
   error: undefined,
 };
 
-const reducer = (state: Object, action: Object) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case "setSearch":
       return {
