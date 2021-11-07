@@ -1,9 +1,9 @@
-import React, { useReducer } from 'react';
-import PropTypes from 'prop-types';
-import { GithubContext } from './';
+import React, { useReducer } from "react";
+import PropTypes from "prop-types";
+import { GithubContext } from ".";
 
 const initialState = {
-  search: '',
+  search: "",
   repos: [],
   page: 1,
   pageEnd: false,
@@ -11,9 +11,9 @@ const initialState = {
   error: undefined,
 };
 
-const reducer = (state, action) => {
+const reducer = (state: Object, action: Object) => {
   switch (action.type) {
-    case 'setSearch':
+    case "setSearch":
       return {
         ...state,
         repos: [],
@@ -21,7 +21,7 @@ const reducer = (state, action) => {
         pageEnd: false,
       };
 
-    case 'setRepos':
+    case "setRepos":
       return {
         ...state,
         repos: action.payload?.repos,
@@ -30,7 +30,7 @@ const reducer = (state, action) => {
         error: undefined,
       };
 
-    case 'setMoreRepos':
+    case "setMoreRepos":
       return {
         ...state,
         repos: [...state.repos, ...action.payload?.repos],
@@ -39,13 +39,13 @@ const reducer = (state, action) => {
         error: undefined,
       };
 
-    case 'setError':
+    case "setError":
       return {
         ...state,
         error: action.payload?.error,
       };
 
-    case 'reset':
+    case "reset":
       return initialState;
 
     default:
@@ -55,7 +55,7 @@ const reducer = (state, action) => {
 
 export const ProviderContext = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(process.env.REACT_APP_AUTH);
+
   return (
     <GithubContext.Provider value={[state, dispatch]}>
       {props.children}

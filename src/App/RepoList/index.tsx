@@ -24,6 +24,7 @@ function RepoList() {
   const lastItemRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver>();
   const { search, repos, perPage, page, pageEnd, error } = state;
+
   // If api error, show the error moal and disconnect observerRef
   const handleErrorFetch = (error: errorObject) => {
     if(error.status) {
