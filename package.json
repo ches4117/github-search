@@ -6,14 +6,17 @@
     "@craco/craco": "^6.3.0",
     "@emotion/react": "^11.5.0",
     "@octokit/core": "^3.5.1",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^27.0.2",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.0",
     "@types/react": "^17.0.30",
     "@types/react-dom": "^17.0.9",
     "bootstrap": "^5.1.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
@@ -31,7 +34,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --coverage --watchAll",
     "eject": "craco eject"
   },
   "eslintConfig": {
@@ -64,6 +67,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.175",
-    "@types/react-router-dom": "^5.3.1"
+    "@types/react-router-dom": "^5.3.1",
+    "jest-extended": "^1.1.0"
   }
 }
